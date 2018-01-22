@@ -97,4 +97,4 @@ The next step is to create a container and make the required changes. Creating a
 $ docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]
 ```
 
-With the network set to ```markdown container``` a container will share the network stack of another container. The other container’s name must be provided in the format of ```markdown --network container:<name|id>```.
+With the network set to ```container``` a container will share the network stack of another container. The other container’s name must be provided in the format of ```--network container:<name|id>```.
