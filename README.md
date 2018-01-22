@@ -1,6 +1,6 @@
 ## Introduction
 
-This tutorial will walk you through the steps of setting up a RabbitMQ cluster hosted on Docker containers based on Ubuntu Xenial (16.04) image. In this guide, we will discuss how to create an Ansible playbook to automate everything done previously.
+This tutorial will walk you through the steps of setting up a RabbitMQ cluster hosted on Docker containers based on Ubuntu Xenial (16.04) image. In this guide, we discuss how to create an Ansible playbook to automate everything done previously.
 
 ### Markdown
 
