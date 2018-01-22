@@ -91,7 +91,10 @@ You can check this has downloaded the image to your local store with the above *
 
 ![](DockerImages.png?raw=true)
 
+The next step is to create a container and make the required changes. Creating a container is Docker is done with the **run command**. The basic docker run command takes this form:
 
-### Support or Contact
+```markdown
+$ docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]
+```
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+With the network set to ```markdown container``` a container will share the network stack of another container. The other container’s name must be provided in the format of ```markdown --network container:<name|id>```.
