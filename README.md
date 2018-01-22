@@ -9,26 +9,16 @@ If you do not already have an SSH key pair, create an RSA key-pair by typing:
 ```markdown
 ssh-keygen
 ```
-
+You will be asked to specify the file location of the created key pair, a passphrase, and the passphrase confirmation. Press ENTER through all of these to accept the default values. Your new keys are available in your user's ~/.ssh directory. The public key (the one you can share) is called id_rsa.pub. type this to get the contents of your public key:
 
 ```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+cat ~/.ssh/id_rsa.pub
 ```
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+For more details see [How to Install and Configure Ansible on an Ubuntu 12.04 VPS](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-ansible-on-an-ubuntu-12-04-vps). The string that is given back to you is what you need to paste in the second field in the Ormuco control panel:
+
+![](KeyPanel.png?raw=true)
+
+Click "Create SSH Key" to add your key to the control panel. 
 
 ### Jekyll Themes
 
