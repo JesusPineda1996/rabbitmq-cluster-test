@@ -2,9 +2,14 @@
 
 This tutorial will walk you through the steps of setting up a RabbitMQ cluster hosted on Docker containers based on Ubuntu Xenial (16.04) image. In this guide, we discuss how to create an Ansible playbook to automate everything done previously.
 
-### Markdown
+### Create a New SSH Key Pair
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+If you do not already have an SSH key pair, create an RSA key-pair by typing:
+
+```markdown
+ssh-keygen
+```
+
 
 ```markdown
 Syntax highlighted code block
@@ -23,7 +28,6 @@ Syntax highlighted code block
 
 [Link](url) and ![Image](src)
 ```
-
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
 ### Jekyll Themes
