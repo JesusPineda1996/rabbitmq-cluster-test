@@ -91,10 +91,33 @@ You can check this has downloaded the image to your local store with the above *
 
 ![](DockerImages.png?raw=true)
 
-The next step is to create a container and make the required changes. Creating a container is Docker is done with the **run command**. The basic docker run command takes this form:
+The next step is to create a container and make the required changes. Creating a container is done with the **run command**. The basic docker run command takes this form:
 
 ```markdown
 $ docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]
 ```
 
-With the network set to ```container``` a container will share the network stack of another container. The other container’s name must be provided in the format of ```--network container:<name|id>```.
+When you run a container, you can use the --network flag to specify which networks your container should connect to. The ```host``` network adds a container on the host’s network stack. In line with this, The docker run command takes this form:
+
+```markdown
+$ docker run --network=host -itd --name=container 2a4cca5ac898  /bin/bash
+```
+
+Now, each container in the network can immediately communicate with other containers in the network. And that’s all there is to it! You have created a new Docker container.
+
+### Install rabbitmq-server
+
+We now have to install ```rabbitmq-server``` (from the official repository) within each container. 
+
+1. Run the following command to update the package list:
+
+```markdown
+$ sudo apt-get update
+```
+
+2. Install rabbitmq-server package:
+
+```markdown
+$ sudo apt-get install rabbitmq-server
+```
+
