@@ -288,14 +288,6 @@ Finally, Here is the entire ```deploy.yml``` file that ```installs docker-ce```,
   - name: Conecting slaves containers to master
     command: docker exec -i rabbitmq bash -c 'rabbitmqctl stop_app; rabbitmqctl join_cluster rabbit@masterRabbitmq; rabbitmqctl start_app'
     when: inventory_hostname != ansible_play_hosts[2]
-
-  handlers:
-
-  - name: stop Docker
-    service: name=docker state=stopped
-
-  - name: start Docker
-    service: name=docker state=started
 ```
 
 
