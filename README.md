@@ -105,3 +105,34 @@ $ sudo apt-get update
 $ sudo apt-get install rabbitmq-server
 ```
 
+## Setup the RabbitMQ cluster
+
+In the following steps, we will name the nodes as node01, node02, node03, and so on.
+
+1. Stop the RabbitMQ server on the nodes if it is already running:
+```markdown
+$ service rabbitmq-server stop
+```
+2. On node01, append all the IP-name bindings to ```/etc/hosts```, so it contains
+something as follows (put your IP addresses here):
+```markdown
+192.34.79.203 node01
+192.34.79.187 node02
+192.34.79.15  node03
+```
+3. Copy the ```/etc/hosts``` file from node01 to all the other nodes in order to have the
+hostname definitions aligned. Use the ```echo``` or ```scp``` command for this porpuse.
+4. Copy the ```/var/lib/rabbitmq/.erlang.cookie``` file from node01 to all the other nodes. Use the ```echo``` or ```scp``` command for this porpuse.
+5. Restart the RabbitMQ server on all the nodes:
+```markdown
+service rabbitmq-server start
+```
+6. Join all the nodes to node01. On all the nodes except node01, run the
+following command:
+```markdown
+rabbitmqctl stop_app
+rabbitmqctl join_cluster --ram rabbit@node01
+rabbitmqctl start_app
+```
+This process has been thoroughly described by Boschi in the book titled "[RabbitMQ Cookbook]"(https://www.amazon.com/RabbitMQ-Cookbook-Sigismondo-Boschi/dp/1849516502)
+
