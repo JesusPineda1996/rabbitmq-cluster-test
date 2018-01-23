@@ -134,5 +134,5 @@ rabbitmqctl stop_app
 rabbitmqctl join_cluster --ram rabbit@node01
 rabbitmqctl start_app
 ```
-This process has been thoroughly described by Boschi in the book titled "[RabbitMQ Cookbook]"(https://www.amazon.com/RabbitMQ-Cookbook-Sigismondo-Boschi/dp/1849516502)
+This process has been thoroughly described by Boschi in the book titled [RabbitMQ Cookbook](https://www.amazon.com/RabbitMQ-Cookbook-Sigismondo-Boschi/dp/1849516502)
 
