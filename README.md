@@ -138,7 +138,7 @@ This process has been thoroughly described by Boschi in the book titled [RabbitM
 
 ## Ansible playbook
 
-# Configuring Ansible Hosts
+### Configuring Ansible Hosts
 
 We need to set up the ```/etc/ansible/hosts``` file first before we can begin to communicate with our other computers. Open the file with root privileges like this:
 ```markdown
