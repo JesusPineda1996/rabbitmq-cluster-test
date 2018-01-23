@@ -290,5 +290,8 @@ Finally, Here is the entire ```deploy.yml``` file that ```installs docker-ce```,
     when: inventory_hostname != ansible_play_hosts[2]
 ```
 
-
-
+Use the following command to run the playbook:
+```
+ansible-playbook deploy.yml
+```
+And that’s all there is to it! We have created a RabbitMQ cluster hosted on Docker containers.
