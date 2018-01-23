@@ -2,7 +2,7 @@
 
 This tutorial will walk you through the steps of setting up a RabbitMQ cluster hosted on Docker containers based on Ubuntu Xenial (16.04) image. In this guide, we discuss how to create an Ansible playbook to automate everything done previously.
 
-### Create a New SSH Key Pair
+## Create a New SSH Key Pair
 
 If you do not already have an SSH key pair, create an RSA key-pair by typing:
 
@@ -20,7 +20,7 @@ For more details see [How to Install and Configure Ansible on an Ubuntu 12.04 VP
 
 Click "Create" to add your key to the control panel. 
 
-### Install docker-ce package
+## Install docker-ce package
 
 Now it’s time for some Docker! First, let's create three instances with at least 1 CPU and 1GB of memory and attach a floating IP to each instance. Before you install Docker CE for the first time on a new host machine, you need to set up the Docker repository:
 
@@ -66,7 +66,7 @@ $ sudo apt-get install docker-ce=<VERSION>
 
 For more details see [Get Docker CE for Ubuntu](https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/).
 
-### Create Your Docker Container !
+## Create Your Docker Container !
 
 We must choose which image to download and use to create our Docker container. Use the pull command to download an image. Let’s download the basic ubuntu 16.04 image:
 
@@ -92,7 +92,7 @@ $ docker run --network=host -itd --name=container 2a4cca5ac898  /bin/bash
 
 Now, each container in the network can immediately communicate with other containers in the network. And that’s all there is to it! You have created a new Docker container.
 
-### Install rabbitmq-server
+## Install rabbitmq-server
 
 We now have to install ```rabbitmq-server``` (from the official repository) within each container. 
 
@@ -135,4 +135,39 @@ rabbitmqctl join_cluster --ram rabbit@node01
 rabbitmqctl start_app
 ```
 This process has been thoroughly described by Boschi in the book titled [RabbitMQ Cookbook](https://www.amazon.com/RabbitMQ-Cookbook-Sigismondo-Boschi/dp/1849516502)
+
+## Ansible playbook
+
+# Configuring Ansible Hosts
+
+We need to set up the ```/etc/ansible/hosts``` file first before we can begin to communicate with our other computers. Open the file with root privileges like this:
+```markdown
+sudo nano /etc/ansible/hosts
+```
+
+The hosts can be configured in a few different ways. The syntax we are going to use though looks something like this:
+```markdown
+[group_name]
+alias ansible_ssh_host=server_ip_address
+```
+
+The ```group_name``` is an organizational tag that lets us refer to any servers listed under it with one word. Our IP addresses are ```192.34.79.203```, ```192.34.79.187```, and ```192.34.79.15```. We will set this up so that we can refer to these individually as ```rabbit1```, ```rabbit2```, and ```rabbit3```, or as a group as ```rabbits```.
+
+This is the block that we should add to our hosts file to accomplish this:
+```markdown
+[rabbits]
+rabbit1 ansible_ssh_host=192.34.79.203
+rabbit2 ansible_ssh_host=192.34.79.187
+rabbit3 ansible_ssh_host=192.34.79.15
+```
+
+Ping all of the servers you configured by typing:
+```markdown
+ansible -m ping all
+```
+![](Ping.png?raw=true)
+
+
+
+
 
