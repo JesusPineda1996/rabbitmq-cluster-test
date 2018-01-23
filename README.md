@@ -167,7 +167,136 @@ ansible -m ping all
 ```
 ![](Ping.png?raw=true)
 
+Finally, Here is the entire ```deploy.yml``` file that ```installs docker-ce```, ```Creates a Docker container on each instance```, ```Installs rabbitmq-server from official RabbitMQ``` and ```Setup the RabbitMQ cluster```. Ansible is a great framework to orchestrate this. The entire ```php.yml``` file should now look like this:
 
+```markdown
+---
+- hosts: rabbits
+  become: yes
+
+  tasks:
+  
+  - name: Uninstall Old Versions
+    apt:
+      pkg:          "{{ item }}"
+      state:        absent
+    with_items:
+      - docker
+      - docker-engine
+
+  - name: Install dependencies
+    apt:
+      pkg:          "{{ item }}"
+      state:        present
+      update_cache: true
+    with_items:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+
+  - name: Add Docker’s official GPG key
+    script: AddGPGkey.sh
+
+  - name: Add Docker repository
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+      state: present
+
+  - name: Install Docker
+    apt:
+      pkg:          docker-ce=17.03.0~ce-0~ubuntu-xenial
+      state:        present
+      update_cache: yes
+
+  - name: Install docker-py
+    pip:
+      name: docker-py
+      state: present
+
+  - name: Pull ubuntu image
+    docker_image:
+      name: ubuntu
+      state: present
+
+  - name: creating container 01
+    docker_container:
+      name: rabbitmq
+      hostname: rabbitmq01
+      image: ubuntu
+      network_mode: host
+      restart_policy: always
+      state: started
+      command: /bin/bash
+      interactive: yes
+      etc_hosts:
+        rabbitmq01: 192.34.79.203
+        rabbitmq02: 192.34.79.187
+        masterRabbitmq: 192.34.79.15
+    when: inventory_hostname == ansible_play_hosts[0]
+
+  - name: creating container 02
+    docker_container:
+      name: rabbitmq
+      hostname: rabbitmq02
+      image: ubuntu
+      network_mode: host
+      restart_policy: always
+      state: started
+      command: /bin/bash
+      interactive: yes
+      etc_hosts:
+        rabbitmq01: 192.34.79.203        
+        rabbitmq02: 192.34.79.187        
+        masterRabbitmq: 192.34.79.15  
+    when: inventory_hostname == ansible_play_hosts[1]
+
+  - name: creating master container
+    docker_container:
+      name: rabbitmq
+      hostname: masterRabbitmq
+      image: ubuntu
+      network_mode: host
+      restart_policy: always
+      state: started
+      command: /bin/bash
+      interactive: yes
+      etc_hosts:
+        rabbitmq01: 192.34.79.203        
+        rabbitmq02: 192.34.79.187        
+        masterRabbitmq: 192.34.79.15  
+    when: inventory_hostname == ansible_play_hosts[2]
+
+  - name: updating containers
+    command: docker exec -i rabbitmq bash -c "apt-get update -y"
+
+  - name: installing rabbitmq
+    command: docker exec -i rabbitmq bash -c "apt-get install rabbitmq-server -y"
+
+  - name: Copying cookies containers 1
+    command: docker exec -i rabbitmq bash -c 'echo -n "PTKAICLBSVDSKHCUZZMX" > /var/lib/rabbitmq/.erlang.cookie '
+
+  - name: Copying cookies containers 2
+    command: docker exec -i rabbitmq bash -c 'chown rabbitmq:rabbitmq /var/lib/rabbitmq/.erlang.cookie'
+
+  - name: Copying cookies containers 3
+    command: docker exec -i rabbitmq bash -c 'chmod 400 /var/lib/rabbitmq/.erlang.cookie'
+
+  - name: Copying cookies containers 3
+    command: docker exec -i rabbitmq bash -c 'service rabbitmq-server start'
+
+  - name: Conecting slaves containers to master
+    command: docker exec -i rabbitmq bash -c 'rabbitmqctl stop_app; rabbitmqctl join_cluster rabbit@masterRabbitmq; rabbitmqctl start_app'
+    when: inventory_hostname != ansible_play_hosts[2]
+
+  handlers:
+
+  - name: stop Docker
+    service: name=docker state=stopped
+
+  - name: start Docker
+    service: name=docker state=started
+```
 
 
 
