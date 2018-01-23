@@ -125,7 +125,7 @@ hostname definitions aligned. Use the ```echo``` or ```scp``` command for this p
 4. Copy the ```/var/lib/rabbitmq/.erlang.cookie``` file from node01 to all the other nodes. Use the ```echo``` or ```scp``` command for this porpuse.
 5. Restart the RabbitMQ server on all the nodes:
 ```markdown
-service rabbitmq-server start
+$ service rabbitmq-server start
 ```
 6. Join all the nodes to node01. On all the nodes except node01, run the
 following command:
@@ -142,7 +142,7 @@ This process has been thoroughly described by Boschi in the book titled [RabbitM
 
 We need to set up the ```/etc/ansible/hosts``` file first before we can begin to communicate with our other computers. Open the file with root privileges like this:
 ```markdown
-sudo nano /etc/ansible/hosts
+$ sudo nano /etc/ansible/hosts
 ```
 
 The hosts can be configured in a few different ways. The syntax we are going to use though looks something like this:
@@ -163,7 +163,7 @@ rabbit3 ansible_ssh_host=192.34.79.15
 
 Ping all of the servers you configured by typing:
 ```markdown
-ansible -m ping all
+$ ansible -m ping all
 ```
 ![](Ping.png?raw=true)
 
@@ -297,6 +297,6 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
 Use the following command to run the playbook:
 ```
-ansible-playbook deploy.yml
+$ ansible-playbook deploy.yml
 ```
 And that’s all there is to it! We have created a RabbitMQ cluster hosted on Docker containers.
